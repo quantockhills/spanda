@@ -3,6 +3,7 @@ package com.madhav.bhairava.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,11 +20,19 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.madhav.bhairava.data.Bhairava
 import com.madhav.bhairava.data.Repository
+import com.madhav.bhairava.notify.AppSettings
 import com.madhav.bhairava.ui.theme.Crimson
 import com.madhav.bhairava.ui.theme.DevanagariFont
 import com.madhav.bhairava.ui.theme.Gold
@@ -65,6 +75,8 @@ fun BhairavaReaderScreen(index: Int, onBack: () -> Unit) {
                 .padding(pad)
         ) { page ->
             val b = entries[page]
+            val route = "amrta/$page"
+            var isFavorite by remember(page) { mutableStateOf(AppSettings.isFavorite(context, route)) }
             val img = rememberAssetImage("mandala_${b.n.toString().padStart(2, '0')}.jpg")
             Column(
                 Modifier
@@ -96,6 +108,18 @@ fun BhairavaReaderScreen(index: Int, onBack: () -> Unit) {
                             fontStyle = FontStyle.Italic,
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    IconButton(onClick = {
+                        isFavorite = AppSettings.toggleFavorite(context, route)
+                    }) {
+                        Icon(
+                            if (isFavorite) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                            tint = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 }
