@@ -79,6 +79,7 @@ import kotlin.random.Random
 fun HomeScreen(
     onOpenSivabodha: () -> Unit,
     onOpenAmrta: () -> Unit,
+    onOpenGita: () -> Unit,
     onOpenRoute: (String) -> Unit,
     onOpenSettings: () -> Unit,
     onOpenFavorites: () -> Unit
@@ -315,6 +316,15 @@ fun HomeScreen(
                 subtitle = "Abhinavagupta's hidden hymn — the fifty Bhairavas of the alphabet, each with its maṇḍala and translation.",
                 thumb = rememberAssetImage("mandala_01.jpg"),
                 onClick = onOpenAmrta
+            )
+        }
+        item {
+            BookCard(
+                devTitle = "भगवद्गीता",
+                title = "Bhagavad Gītā",
+                subtitle = "The Gītārtha-saṅgraha — Abhinavagupta's commentary on the Gita, verse by verse, in the Kashmiri recension.",
+                thumb = null,
+                onClick = onOpenGita
             )
         }
 

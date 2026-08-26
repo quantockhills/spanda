@@ -23,6 +23,7 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
             HomeScreen(
                 onOpenSivabodha = { nav.navigate("sivabodha") },
                 onOpenAmrta = { nav.navigate("amrta") },
+                onOpenGita = { nav.navigate("gita") },
                 onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } },
                 onOpenSettings = { nav.navigate("settings") },
                 onOpenFavorites = { nav.navigate("favorites") }
@@ -55,6 +56,34 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
         ) { entry ->
             BhairavaReaderScreen(
                 index = entry.arguments?.getInt("index") ?: 0,
+                onBack = { nav.popBackStack() }
+            )
+        }
+        composable("gita") {
+            GitaListScreen(
+                onBack = { nav.popBackStack() },
+                onOpen = { i -> nav.navigate("gita/$i") }
+            )
+        }
+        composable(
+            "gita/{chapter}/{verse}",
+            arguments = listOf(
+                navArgument("chapter") { type = NavType.IntType },
+                navArgument("verse") { type = NavType.IntType }
+            )
+        ) { entry ->
+            GitaVerseReaderScreen(
+                chapterIndex = entry.arguments?.getInt("chapter") ?: 0,
+                initialVerse = entry.arguments?.getInt("verse") ?: 0,
+                onBack = { nav.popBackStack() }
+            )
+        }
+        composable(
+            "gita/{chapter}",
+            arguments = listOf(navArgument("chapter") { type = NavType.IntType })
+        ) { entry ->
+            GitaVerseReaderScreen(
+                chapterIndex = entry.arguments?.getInt("chapter") ?: 0,
                 onBack = { nav.popBackStack() }
             )
         }

@@ -92,6 +92,14 @@ private fun FavoriteItem(route: String, lib: com.madhav.bhairava.data.Library, o
             val b = lib.bhairavas.getOrNull(idx)
             if (b != null) Pair(b.name, "Amṛtādistavaḥ · ${b.phoneme}") else Pair("Unknown", "")
         }
+        route.startsWith("gita/") -> {
+            val parts = route.removePrefix("gita/").split("/")
+            val ch = parts.getOrNull(0)?.toIntOrNull() ?: 0
+            val v = parts.getOrNull(1)?.toIntOrNull() ?: 0
+            val gc = lib.gita.getOrNull(ch)
+            val gv = gc?.verses?.getOrNull(v)
+            if (gv != null) Pair("BG ${gc.n}.${gv.label}", gc.nameRoman.ifBlank { "Chapter ${gc.n}" }) else Pair("Unknown", "")
+        }
         else -> Pair("Unknown", "")
     }
 
