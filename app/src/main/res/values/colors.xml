@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="parchment">#F7F7F4</color>
+    <color name="crimson">#A02030</color>
+    <color name="ink">#241C12</color>
+    <color name="icon_bg">#A02030</color>
+    <color name="parchment_dark">#151515</color>
+    <color name="crimson_dark">#D64856</color>
+</resources>
