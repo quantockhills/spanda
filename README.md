@@ -1,4 +1,4 @@
-# Bhairava Bodha — Śivabodhaviṃśikā · Amṛtādistavaḥ
+# Spanda — Śivabodhaviṃśikā · Amṛtādistavaḥ
 
 A personal Android app for two texts translated by **Śaivācārya Sthaneshwar Timalsina**
 (Vimarsha Foundation, San Diego, 2021):

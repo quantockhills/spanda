@@ -182,7 +182,7 @@ fun HomeScreen(
                         .padding(20.dp)
                 ) {
                     Text(
-                        "Bhairava Bodha",
+                        "Spanda",
                         fontFamily = SerifFont,
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,

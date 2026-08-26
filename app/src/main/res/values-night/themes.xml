@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.BhairavaBodha" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.Spanda" parent="android:Theme.Material.NoActionBar">
         <item name="android:statusBarColor">@color/parchment_dark</item>
         <item name="android:navigationBarColor">@color/parchment_dark</item>
         <item name="android:windowBackground">@color/parchment_dark</item>
