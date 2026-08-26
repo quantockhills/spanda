@@ -87,10 +87,12 @@ private fun typography(text: Color, muted: Color): Typography = Typography(
 
 @Composable
 fun BhairavaTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean? = null,
     content: @Composable () -> Unit
 ) {
-    val scheme = if (darkTheme) DarkColors else LightColors
+    val systemDark = isSystemInDarkTheme()
+    val useDark = darkTheme ?: systemDark
+    val scheme = if (useDark) DarkColors else LightColors
     MaterialTheme(
         colorScheme = scheme,
         typography = typography(scheme.onSurface, scheme.onSurfaceVariant),

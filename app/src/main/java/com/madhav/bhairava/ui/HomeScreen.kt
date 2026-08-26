@@ -23,8 +23,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -77,7 +79,9 @@ import kotlin.random.Random
 fun HomeScreen(
     onOpenSivabodha: () -> Unit,
     onOpenAmrta: () -> Unit,
-    onOpenRoute: (String) -> Unit
+    onOpenRoute: (String) -> Unit,
+    onOpenSettings: () -> Unit,
+    onOpenFavorites: () -> Unit
 ) {
     val context = LocalContext.current
     val lib = remember { Repository.library(context) }
@@ -176,29 +180,35 @@ fun HomeScreen(
                             )
                         )
                 )
-                Column(
-                    Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(20.dp)
-                ) {
-                    Text(
-                        "Spanda",
-                        fontFamily = SerifFont,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
-                        color = Color(0xFFFAF8F2)
-                    )
-                    Text(
-                        "शिवबोधविंशिका · अमृतादिस्तवः",
-                        fontFamily = DevanagariFont,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.tertiary
-                    )
-                    Text(
-                        "Śivabodhaviṃśikā · Amṛtādistavaḥ",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFFCBBFA8)
-                    )
+                Box(Modifier.fillMaxWidth().padding(20.dp)) {
+                    Column {
+                        Text(
+                            "Spanda",
+                            fontFamily = SerifFont,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            color = Color(0xFFFAF8F2)
+                        )
+                        Text(
+                            "शिवबोधविंशिका · अमृतादिस्तवः",
+                            fontFamily = DevanagariFont,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                        Text(
+                            "Śivabodhaviṃśikā · Amṛtādistavaḥ",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = Color(0xFFCBBFA8)
+                        )
+                    }
+                    Row(Modifier.align(Alignment.TopEnd)) {
+                        IconButton(onClick = onOpenFavorites) {
+                            Icon(Icons.Outlined.Favorite, contentDescription = "Favorites", tint = Color(0xFFCBBFA8))
+                        }
+                        IconButton(onClick = onOpenSettings) {
+                            Icon(Icons.Outlined.Settings, contentDescription = "Settings", tint = Color(0xFFCBBFA8))
+                        }
+                    }
                 }
             }
         }

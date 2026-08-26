@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 
 @Composable
-fun App(deepLink: String?, onDeepLinkHandled: () -> Unit) {
+fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> Unit) {
     val nav = rememberNavController()
 
     LaunchedEffect(deepLink) {
@@ -23,7 +23,9 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit) {
             HomeScreen(
                 onOpenSivabodha = { nav.navigate("sivabodha") },
                 onOpenAmrta = { nav.navigate("amrta") },
-                onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } }
+                onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } },
+                onOpenSettings = { nav.navigate("settings") },
+                onOpenFavorites = { nav.navigate("favorites") }
             )
         }
         composable("sivabodha") {
@@ -54,6 +56,18 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit) {
             BhairavaReaderScreen(
                 index = entry.arguments?.getInt("index") ?: 0,
                 onBack = { nav.popBackStack() }
+            )
+        }
+        composable("settings") {
+            SettingsScreen(
+                onBack = { nav.popBackStack() },
+                onThemeChanged = onThemeChanged
+            )
+        }
+        composable("favorites") {
+            FavoritesScreen(
+                onBack = { nav.popBackStack() },
+                onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } }
             )
         }
     }

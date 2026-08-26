@@ -2,6 +2,7 @@ package com.madhav.bhairava.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +14,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import com.madhav.bhairava.data.Repository
+import com.madhav.bhairava.notify.AppSettings
 import com.madhav.bhairava.ui.theme.Crimson
 import com.madhav.bhairava.ui.theme.DevanagariFont
 import com.madhav.bhairava.ui.theme.Gold
@@ -64,6 +69,9 @@ fun StanzaReaderScreen(index: Int, onBack: () -> Unit) {
                 .padding(pad)
         ) { page ->
             val s = stanzas[page]
+            val route = "sivabodha/$page"
+            var isFavorite by remember(page) { mutableStateOf(AppSettings.isFavorite(context, route)) }
+
             Column(
                 Modifier
                     .fillMaxSize()
@@ -96,7 +104,20 @@ fun StanzaReaderScreen(index: Int, onBack: () -> Unit) {
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(8.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    IconButton(onClick = {
+                        isFavorite = AppSettings.toggleFavorite(context, route)
+                    }) {
+                        Icon(
+                            if (isFavorite) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                            tint = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+                Spacer(Modifier.height(4.dp))
                 DividerGold()
                 Spacer(Modifier.height(20.dp))
                 Text(
