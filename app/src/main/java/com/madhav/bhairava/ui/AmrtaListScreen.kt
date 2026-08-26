@@ -77,6 +77,13 @@ fun AmrtaListScreen(onBack: () -> Unit, onOpen: (Int) -> Unit) {
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) { AmrtaIntroCard(lib) }
             item(span = { GridItemSpan(maxLineSpan) }) {
+                Column {
+                    Spacer(Modifier.height(6.dp))
+                    ArtworkGallery()
+                    Spacer(Modifier.height(6.dp))
+                }
+            }
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 SectionHeader(
                     "The Sixteen Amṛta Bhairavas",
                     "the vowels — from the Īśvara-Pratyabhijñā-Vivṛtti-Vivaraṇa"
