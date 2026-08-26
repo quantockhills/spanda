@@ -14,12 +14,13 @@ object Repository {
             lib?.let { return it }
             val sivabodha = context.assets.open("sivabodha.json").bufferedReader().use { it.readText() }
             val amrta = context.assets.open("amrta.json").bufferedReader().use { it.readText() }
-            lib = parse(sivabodha, amrta)
+            val gita = context.assets.open("gita.json").bufferedReader().use { it.readText() }
+            lib = parse(sivabodha, amrta, gita)
             return lib!!
         }
     }
 
-    private fun parse(siv: String, amr: String): Library {
+    private fun parse(siv: String, amr: String, git: String): Library {
         val sj = JSONObject(siv)
         val aj = JSONObject(amr)
 
@@ -76,6 +77,32 @@ object Repository {
         }
         val mvu = aj.getJSONObject("mvu")
 
+        val gitaChapters = JSONObject(git).getJSONArray("chapters").let { arr ->
+            (0 until arr.length()).map { i ->
+                val o = arr.getJSONObject(i)
+                val verses = o.getJSONArray("verses").let { va ->
+                    (0 until va.length()).map { j ->
+                        val vo = va.getJSONObject(j)
+                        GitaVerse(
+                            label = vo.getString("label"),
+                            sanskrit = vo.optString("sanskrit", ""),
+                            transliteration = vo.optString("transliteration", ""),
+                            translation = vo.getString("translation"),
+                            commentary = vo.optString("commentary", "")
+                        )
+                    }
+                }
+                GitaChapter(
+                    n = o.getInt("n"),
+                    name = o.optString("name", ""),
+                    nameRoman = o.optString("nameRoman", ""),
+                    meaning = o.optString("meaning", ""),
+                    intro = o.optString("intro", ""),
+                    verses = verses
+                )
+            }
+        }
+
         return Library(
             title = aj.getString("title"),
             subtitle = aj.getString("subtitle"),
@@ -85,7 +112,8 @@ object Repository {
             mvuText = mvu.getString("text"),
             prologue = prologue,
             stanzas = stanzas,
-            bhairavas = bhairavas
+            bhairavas = bhairavas,
+            gita = gitaChapters
         )
     }
 }
