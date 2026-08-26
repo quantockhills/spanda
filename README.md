@@ -3,6 +3,11 @@
 A personal Android app for two texts translated by **Śaivācārya Sthaneshwar Timalsina**
 (Vimarsha Foundation, San Diego, 2021):
 
+> **Not affiliated with, endorsed by, or sponsored by Vimarsha Foundation.**
+> This is an unofficial, personal project built for my own study of these texts.
+> The translations and maṇḍala art are © Vimarsha Foundation (San Diego, 2021);
+> they are included here for personal study only, not redistributed commercially.
+
 1. **Śivabodhaviṃśikā** — *Twenty Stanzas on the Realization of Śiva*.
    The 20 contemplations (bhāvanās), in order, each with Devanagari,
    transliteration, a word-by-word gloss, and translation.
