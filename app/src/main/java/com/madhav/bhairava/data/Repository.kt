@@ -107,7 +107,7 @@ object Repository {
         // Saṃvarta Stavaḥ
         val sj2 = JSONObject(svt)
         fun parseVerse(o: JSONObject): SamvartaVerse = SamvartaVerse(
-            n = o.getInt("n"),
+            n = o.optInt("n", 0),
             devanagari = o.getString("devanagari"),
             transliteration = o.optString("transliteration", ""),
             translation = o.getString("translation"),
