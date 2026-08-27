@@ -1,11 +1,11 @@
-# Spanda — Śivabodhaviṃśikā · Amṛtādistavaḥ
+# Spanda — Śivabodhaviṃśikā · Amṛtādistavaḥ · Saṃvarta Stavaḥ
 
-A personal Android app for two texts translated by **Śaivācārya Sthaneshwar Timalsina**
+A personal Android app for texts translated and commented by **Śaivācārya Sthaneshwar Timalsina**
 (Vimarsha Foundation, San Diego, 2021):
 
 > **Not affiliated with, endorsed by, or sponsored by Vimarsha Foundation or Boris Marjanović.**
 > This is an unofficial, personal project built for my own study of these texts.
-> The Śivabodhaviṃśikā/Amṛtādistavaḥ translations and maṇḍala art are © Vimarsha Foundation (San Diego, 2021);
+> The Śivabodhaviṃśikā/Amṛtādistavaḥ/Saṃvarta Stavaḥ translations and maṇḍala art are © Vimarsha Foundation (San Diego, 2021);
 > the Gītārtha-saṅgraha translation is © Boris Marjanović / Indica Books (2004);
 > all included here for personal study only, not redistributed commercially.
 > Consider supporting Vimarsha Foundation: <https://www.vimarshafoundation.org/supportus>
@@ -17,6 +17,15 @@ A personal Android app for two texts translated by **Śaivācārya Sthaneshwar T
    of the alphabet (16 vowels + 34 consonants), each with its maṇḍala
    art (from the Vimarsha Foundation booklet), Devanagari, transliteration,
    and translation.
+3. **Saṃvarta Stavaḥ** — Timalsina's hymn to **Saṃvarta Bhairava** in the
+   four soma-pressings of the day: 46 verses across Prātaḥ (Morning),
+   Mādhyaṃdina (Midday), Sāyaṃ (Evening), and Niśītha (Midnight) savanas,
+   each with Devanagari, transliteration, translation, and a companion
+   photograph (temple sculpture); plus the opening verse, three transition
+   verses, and the colophon.
+4. **Bhagavad Gītā** — the Gītārtha-saṅgraha, Abhinavagupta's commentary
+   on the Gita in the Kashmiri recension: 711 verses with Sanskrit,
+   transliteration, translation, and commentary.
 
 For personal study only. All text and art © Vimarsha Foundation, used here
 privately, not redistributed.
@@ -26,9 +35,14 @@ privately, not redistributed.
 - **Śivabodha reader** — 20 contemplations in order; swipe between stanzas;
   expandable word-by-word gloss per stanza.
 - **Amṛtādi gallery** — all 50 Bhairavas with their maṇḍalas; swipe between them.
+- **Saṃvarta reader** — 46 verses across the four soma-pressings with their
+  sculpture photographs; opening/closing verses and colophon included.
+- **Gītā reader** — 18 chapters, verse-by-verse, swipeable.
 - **Daily reminder** — a random meditation notification each day
-  (configurable time, enable/disable). Tapping it opens the exact stanza/bhairava.
+  (configurable time, enable/disable). Tapping it opens the exact stanza/bhairava/verse.
 - **Today's meditation** — a random verse on the home screen, reshuffle anytime.
+- **Favorites & notes** — save verses across all four texts; inline notepad
+  per verse and a My Notes screen.
 - **Light & dark themes** — follows the system setting; neutral near-white background
   with medium-dark red accents and sharp square corners. Tiro Devanagari Sanskrit
   & Gentium Plus type.
@@ -71,6 +85,13 @@ Or open the folder in Android Studio and press Run.
 - `app/src/main/assets/amrta.json` — the 50 Bhairavas (16 vowels = Amṛta
   Bhairavas, 34 consonants = Rudras), plus Timalsina's introduction and the
   Mālinīvijayottara III.17–24 source list.
+- `app/src/main/assets/samvarta.json` — the Saṃvarta Stavaḥ: 46 verses in 4
+  soma-pressing sections (Prātaḥ/Mādhyaṃdina/Sāyaṃ/Niśītha savana), the
+  opening verse, 3 transition verses, the colophon, and Timalsina's preface.
+  Built from the source PDF by `data/build_samvarta.py` (drop caps restored,
+  PDF-layer artifacts cleaned, two-verse-page translations split).
+- `app/src/main/assets/samvarta_p*.jpg` — companion sculpture photographs
+  (Wikimedia Commons, CC-BY-SA), compressed from the PDF images.
 - `app/src/main/assets/mandala_01.jpg … mandala_50.jpg` — maṇḍala art
   extracted from the booklet (rendered from the PDF at 1.8×, JPEG q82).
 - `app/src/main/assets/cover.jpg`, `frontispiece.jpg` — booklet artwork.
