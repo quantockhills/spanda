@@ -46,7 +46,9 @@ compose.desktop {
             targetFormats(TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Dmg)
             packageName = "Spanda"
             packageVersion = "1.0.0"
-            description = "Spanda — Śivabodhaviṃśikā · Amṛtādistavaḥ · Saṃvarta Stavaḥ · Bhagavad Gītā"
+            // keep ASCII-only: jpackage writes this into WiX config and chokes on
+            // non-ASCII (UnmappableCharacterException "Input length = 1")
+            description = "Spanda - Sivabodhavimsika, Amrtadistavah, Samvarta Stavah, Bhagavad Gita"
             vendor = "Spanda"
             windows {
                 // MSI built on a Windows runner (WiX); see .github/workflows/desktop-msi.yml
