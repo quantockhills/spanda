@@ -158,6 +158,7 @@ fun BhairavaReaderScreen(index: Int, onBack: () -> Unit) {
                 )
                 Spacer(Modifier.height(18.dp))
                 Text(b.translation, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+                VerseNotepad(route)
                 Spacer(Modifier.height(24.dp))
                 Text(
                     sectionLabel(b, page),

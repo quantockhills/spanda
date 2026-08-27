@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Refresh
@@ -82,7 +83,8 @@ fun HomeScreen(
     onOpenGita: () -> Unit,
     onOpenRoute: (String) -> Unit,
     onOpenSettings: () -> Unit,
-    onOpenFavorites: () -> Unit
+    onOpenFavorites: () -> Unit,
+    onOpenNotes: () -> Unit
 ) {
     val context = LocalContext.current
     val lib = remember { Repository.library(context) }
@@ -203,6 +205,9 @@ fun HomeScreen(
                         )
                     }
                     Row(Modifier.align(Alignment.TopEnd)) {
+                        IconButton(onClick = onOpenNotes) {
+                            Icon(Icons.Outlined.Edit, contentDescription = "My Notes", tint = Color(0xFFCBBFA8))
+                        }
                         IconButton(onClick = onOpenFavorites) {
                             Icon(Icons.Outlined.Favorite, contentDescription = "Favorites", tint = Color(0xFFCBBFA8))
                         }
