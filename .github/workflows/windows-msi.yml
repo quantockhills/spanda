@@ -56,3 +56,4 @@ jobs:
               --title "Spanda Desktop $GITHUB_REF_NAME" \
               --notes "Windows installer (MSI). Four texts: Sivabodhavimsika, Amrtadistavah, Samvarta Stavah, Bhagavad Gita."
           fi
+# re-register
