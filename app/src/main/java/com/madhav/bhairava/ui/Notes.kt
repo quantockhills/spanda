@@ -161,6 +161,11 @@ fun routeTitle(lib: Library, route: String): Pair<String, String> {
             val b = lib.bhairavas.getOrNull(idx)
             if (b != null) Pair(b.name, "Amṛtādistavaḥ · ${b.phoneme}") else Pair("Unknown", "")
         }
+        route.startsWith("samvarta/") -> {
+            val idx = route.removePrefix("samvarta/").toIntOrNull() ?: 0
+            val entry = flattenSamvarta(lib).getOrNull(idx)
+            if (entry != null) Pair(entry.label, "Saṃvarta Stavaḥ · ${entry.sublabel}") else Pair("Unknown", "")
+        }
         route.startsWith("gita/") -> {
             val parts = route.removePrefix("gita/").split("/")
             val ch = parts.getOrNull(0)?.toIntOrNull() ?: 0
