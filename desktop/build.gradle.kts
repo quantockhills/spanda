@@ -45,13 +45,16 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Dmg)
             packageName = "Spanda"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.1"
             // keep ASCII-only: jpackage writes this into WiX config and chokes on
             // non-ASCII (UnmappableCharacterException "Input length = 1")
             description = "Spanda - Sivabodhavimsika, Amrtadistavah, Samvarta Stavah, Bhagavad Gita"
             vendor = "Spanda"
             windows {
                 // MSI built on a Windows runner (WiX); see .github/workflows/desktop-msi.yml
+                menuGroup = "Spanda"
+                shortcut = true
+                upgradeUuid = "3c2b0d54-2a1e-4f9b-9c7d-8e6f5a4b3c2d"
             }
         }
     }
