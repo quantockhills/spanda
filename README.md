@@ -3,10 +3,12 @@
 A personal Android app for two texts translated by **Śaivācārya Sthaneshwar Timalsina**
 (Vimarsha Foundation, San Diego, 2021):
 
-> **Not affiliated with, endorsed by, or sponsored by Vimarsha Foundation.**
+> **Not affiliated with, endorsed by, or sponsored by Vimarsha Foundation or Boris Marjanović.**
 > This is an unofficial, personal project built for my own study of these texts.
-> The translations and maṇḍala art are © Vimarsha Foundation (San Diego, 2021);
-> they are included here for personal study only, not redistributed commercially.
+> The Śivabodhaviṃśikā/Amṛtādistavaḥ translations and maṇḍala art are © Vimarsha Foundation (San Diego, 2021);
+> the Gītārtha-saṅgraha translation is © Boris Marjanović / Indica Books (2004);
+> all included here for personal study only, not redistributed commercially.
+> Consider supporting Vimarsha Foundation: <https://www.vimarshafoundation.org/supportus>
 
 1. **Śivabodhaviṃśikā** — *Twenty Stanzas on the Realization of Śiva*.
    The 20 contemplations (bhāvanās), in order, each with Devanagari,
