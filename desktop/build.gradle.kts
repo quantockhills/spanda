@@ -15,7 +15,8 @@ kotlin {
         // desktop replacements live in desktop/src/main/kotlin.
         kotlin.srcDir("../app/src/main/java")
         kotlin.exclude(org.gradle.api.specs.Spec { e ->
-            val abs = e.file.absolutePath
+            // normalize to forward slashes so this works on Windows runners too
+            val abs = e.file.absolutePath.replace('\\', '/')
             if (!abs.contains("/app/src/main/java/")) return@Spec false
             abs.endsWith("MainActivity.kt") ||
                 abs.endsWith("notify/ReminderScheduler.kt") ||
