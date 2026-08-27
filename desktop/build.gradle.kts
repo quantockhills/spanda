@@ -45,7 +45,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Dmg)
             packageName = "Spanda"
-            packageVersion = "1.0.1"
+            packageVersion = "1.0.2"
             // keep ASCII-only: jpackage writes this into WiX config and chokes on
             // non-ASCII (UnmappableCharacterException "Input length = 1")
             description = "Spanda - Sivabodhavimsika, Amrtadistavah, Samvarta Stavah, Bhagavad Gita"
