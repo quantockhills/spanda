@@ -1,9 +1,6 @@
-name: Windows MSI (Spanda desktop)
+name: Windows MSI
 
 on:
-  push:
-    tags:
-      - "desktop-v*"
   workflow_dispatch:
 
 permissions:
@@ -24,36 +21,15 @@ jobs:
         shell: bash
         run: ./gradlew :desktop:packageMsi --no-daemon
 
-      - name: Dump jpackage/WiX logs on failure
+      - name: Dump jpackage logs on failure
         if: failure()
         shell: bash
         run: |
-          echo "=== jpackage err ==="
-          cat desktop/build/compose/logs/packageMsi/*err*.txt 2>/dev/null || echo "(no err file)"
-          echo "=== jpackage out ==="
-          cat desktop/build/compose/logs/packageMsi/*out*.txt 2>/dev/null || echo "(no out file)"
+          cat desktop/build/compose/logs/packageMsi/*err*.txt 2>/dev/null || true
+          cat desktop/build/compose/logs/packageMsi/*out*.txt 2>/dev/null || true
 
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
         with:
           name: spanda-windows-msi
           path: desktop/build/compose/binaries/main/msi/*.msi
-
-      - name: Create or update release with MSI
-        if: startsWith(github.ref, 'refs/tags/desktop-v')
-        env:
-          GH_TOKEN: *** secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -e
-          MSI=$(ls desktop/build/compose/binaries/main/msi/*.msi | head -1)
-          echo "MSI=$MSI"
-          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
-            gh release upload "$GITHUB_REF_NAME" "$MSI" --clobber
-            gh release edit "$GITHUB_REF_NAME" --title "Spanda Desktop $GITHUB_REF_NAME" --notes "Windows installer (MSI). Four texts: Sivabodhavimsika, Amrtadistavah, Samvarta Stavah, Bhagavad Gita." --latest
-          else
-            gh release create "$GITHUB_REF_NAME" "$MSI" \
-              --title "Spanda Desktop $GITHUB_REF_NAME" \
-              --notes "Windows installer (MSI). Four texts: Sivabodhavimsika, Amrtadistavah, Samvarta Stavah, Bhagavad Gita."
-          fi
-# re-register
