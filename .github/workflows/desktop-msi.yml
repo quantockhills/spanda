@@ -21,6 +21,17 @@ jobs:
         shell: bash
         run: ./gradlew :desktop:packageMsi --no-daemon
 
+      - name: Dump jpackage/WiX logs on failure
+        if: failure()
+        shell: bash
+        run: |
+          echo "=== jpackage err ==="
+          cat desktop/build/compose/logs/packageMsi/*err*.txt 2>/dev/null || echo "(no err file)"
+          echo "=== jpackage out ==="
+          cat desktop/build/compose/logs/packageMsi/*out*.txt 2>/dev/null || echo "(no out file)"
+          echo "=== compose tmp ==="
+          ls -la desktop/build/compose/tmp 2>/dev/null || true
+
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
         with:
