@@ -55,6 +55,7 @@ compose.desktop {
                 menuGroup = "Spanda"
                 shortcut = true
                 upgradeUuid = "3c2b0d54-2a1e-4f9b-9c7d-8e6f5a4b3c2d"
+                iconFile.set(file("src/main/resources/spanda.ico"))
             }
         }
     }
