@@ -60,5 +60,40 @@ data class Library(
     val prologue: List<OpeningVerse>,
     val stanzas: List<Stanza>,
     val bhairavas: List<Bhairava>,
-    val gita: List<GitaChapter>
+    val gita: List<GitaChapter>,
+    val samvartaTitle: String = "",
+    val samvartaTitleRoman: String = "",
+    val samvartaSubtitle: String = "",
+    val samvartaAuthor: String = "",
+    val samvartaCredits: String = "",
+    val samvartaIntro: List<String> = emptyList(),
+    val samvartaOpening: SamvartaVerse? = null,
+    val samvartaSections: List<SamvartaSection> = emptyList(),
+    val samvartaColophon: SamvartaColophon? = null
+)
+
+data class SamvartaVerse(
+    val n: Int,
+    val devanagari: String,
+    val transliteration: String,
+    val translation: String,
+    val image: String? = null
+)
+
+data class SamvartaSection(
+    val name: String,
+    val nameRoman: String,
+    val subtitleEn: String,
+    val image: String? = null,
+    val verses: List<SamvartaVerse>,
+    val closing: SamvartaVerse? = null
+)
+
+data class SamvartaColophon(
+    val note: String,
+    val noteRoman: String,
+    val noteEn: String,
+    val devanagari: String,
+    val transliteration: String,
+    val translation: String
 )

@@ -81,6 +81,7 @@ fun HomeScreen(
     onOpenSivabodha: () -> Unit,
     onOpenAmrta: () -> Unit,
     onOpenGita: () -> Unit,
+    onOpenSamvarta: () -> Unit,
     onOpenRoute: (String) -> Unit,
     onOpenSettings: () -> Unit,
     onOpenFavorites: () -> Unit,
@@ -193,13 +194,13 @@ fun HomeScreen(
                             color = Color(0xFFFAF8F2)
                         )
                         Text(
-                            "शिवबोधविंशिका · अमृतादिस्तवः",
+                            "शिवबोधविंशिका · अमृतादिस्तवः · संवर्तस्तवः",
                             fontFamily = DevanagariFont,
                             fontSize = 16.sp,
                             color = MaterialTheme.colorScheme.tertiary
                         )
                         Text(
-                            "Śivabodhaviṃśikā · Amṛtādistavaḥ",
+                            "Śivabodhaviṃśikā · Amṛtādistavaḥ · Saṃvarta Stavaḥ",
                             style = MaterialTheme.typography.labelSmall,
                             color = Color(0xFFCBBFA8)
                         )
@@ -325,6 +326,15 @@ fun HomeScreen(
         }
         item {
             BookCard(
+                devTitle = "संवर्तस्तवः",
+                title = "Saṃvarta Stavaḥ",
+                subtitle = "Timalsina's hymn to Saṃvarta Bhairava — the four soma-pressings of the day, with the Saṃvartamaṇḍala.",
+                thumb = rememberAssetImage("samvarta_p13_0.jpg"),
+                onClick = onOpenSamvarta
+            )
+        }
+        item {
+            BookCard(
                 devTitle = "भगवद्गीता",
                 title = "Bhagavad Gītā",
                 subtitle = "The Gītārtha-saṅgraha — Abhinavagupta's commentary on the Gita, verse by verse, in the Kashmiri recension.",
@@ -336,7 +346,7 @@ fun HomeScreen(
         // ---- attribution ----
         item {
             Text(
-                "Text by Śaivācārya Abhinavagupta · Translated by Śaivācārya Sthaneshwar Timalsina\nVimarsha Foundation, San Diego, 2021 — for personal study",
+                "Text by Śaivācārya Abhinavagupta · Translated by Śaivācārya Sthaneshwar Timalsina\nSaṃvarta Stavaḥ: text and commentary by Sthaneshwar Timalsina · Vimarsha Foundation, San Diego, 2021 — for personal study",
                 style = MaterialTheme.typography.labelSmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

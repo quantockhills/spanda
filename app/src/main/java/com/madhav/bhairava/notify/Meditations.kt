@@ -1,6 +1,7 @@
 package com.madhav.bhairava.notify
 
 import com.madhav.bhairava.data.Library
+import com.madhav.bhairava.ui.flattenSamvarta
 
 data class Meditation(
     val title: String,
@@ -25,6 +26,14 @@ fun buildPool(lib: Library): List<Meditation> {
             sanskrit = b.devanagari,
             body = b.translation,
             route = "amrta/${b.n}"
+        )
+    }
+    flattenSamvarta(lib).forEachIndexed { i, entry ->
+        pool += Meditation(
+            title = "Saṃvarta Stavaḥ — ${entry.label}",
+            sanskrit = entry.verse.devanagari,
+            body = entry.verse.translation,
+            route = "samvarta/$i"
         )
     }
     return pool

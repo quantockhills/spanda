@@ -24,6 +24,7 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
                 onOpenSivabodha = { nav.navigate("sivabodha") },
                 onOpenAmrta = { nav.navigate("amrta") },
                 onOpenGita = { nav.navigate("gita") },
+                onOpenSamvarta = { nav.navigate("samvarta") },
                 onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } },
                 onOpenSettings = { nav.navigate("settings") },
                 onOpenFavorites = { nav.navigate("favorites") },
@@ -85,6 +86,21 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
         ) { entry ->
             GitaVerseReaderScreen(
                 chapterIndex = entry.arguments?.getInt("chapter") ?: 0,
+                onBack = { nav.popBackStack() }
+            )
+        }
+        composable("samvarta") {
+            SamvartaListScreen(
+                onBack = { nav.popBackStack() },
+                onOpen = { i -> nav.navigate("samvarta/$i") }
+            )
+        }
+        composable(
+            "samvarta/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.IntType })
+        ) { entry ->
+            SamvartaReaderScreen(
+                index = entry.arguments?.getInt("index") ?: 0,
                 onBack = { nav.popBackStack() }
             )
         }
