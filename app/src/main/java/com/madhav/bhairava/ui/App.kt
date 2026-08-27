@@ -26,7 +26,8 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
                 onOpenGita = { nav.navigate("gita") },
                 onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } },
                 onOpenSettings = { nav.navigate("settings") },
-                onOpenFavorites = { nav.navigate("favorites") }
+                onOpenFavorites = { nav.navigate("favorites") },
+                onOpenNotes = { nav.navigate("notes") }
             )
         }
         composable("sivabodha") {
@@ -95,6 +96,12 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
         }
         composable("favorites") {
             FavoritesScreen(
+                onBack = { nav.popBackStack() },
+                onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } }
+            )
+        }
+        composable("notes") {
+            NotesScreen(
                 onBack = { nav.popBackStack() },
                 onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } }
             )

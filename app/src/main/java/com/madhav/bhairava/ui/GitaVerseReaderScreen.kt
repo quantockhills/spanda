@@ -140,6 +140,7 @@ fun GitaVerseReaderScreen(chapterIndex: Int, initialVerse: Int = 0, onBack: () -
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+                VerseNotepad(route)
                 Spacer(Modifier.height(28.dp))
                 Text(
                     "— ${chapter.n}.${v.label} —",

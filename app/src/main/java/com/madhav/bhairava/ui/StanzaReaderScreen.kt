@@ -178,6 +178,7 @@ fun StanzaReaderScreen(index: Int, onBack: () -> Unit) {
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
+                VerseNotepad(route)
                 Spacer(Modifier.height(28.dp))
                 Text(
                     "— ${s.ordinalRoman} —",
