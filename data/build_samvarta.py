@@ -309,6 +309,7 @@ def simple_verse(p, deva_override=None, translit_override=None):
         deva = deva.replace(k, v)
     translit = translit_override or join_translit(translit_lines)
     return {
+        "n": 0,
         "devanagari": deva,
         "transliteration": translit,
         "translation": join_english(engl_lines, dropcap),
