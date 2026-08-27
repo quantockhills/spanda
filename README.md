@@ -106,3 +106,19 @@ app/src/main/java/com/madhav/bhairava/
   ui/                        Compose screens (home, lists, pager readers)
   ui/theme/                  light/dark theme, Devanagari serif fonts
 ```
+
+## Desktop (Windows)
+
+A Compose Multiplatform desktop build of the same app lives in `desktop/` — it reuses the
+app's UI sources via a shared source set; only the Android plumbing (Context, SharedPreferences,
+assets, fonts, notifications) is replaced with desktop shims. Notes/favorites are stored in
+`~/.spanda/`.
+
+Build the Windows MSI locally (no CI needed; requires JDK 17, WiX is fetched automatically):
+
+```bat
+desktop\build-msi.bat
+rem -> desktop\build\compose\binaries\main\msi\Spanda-<version>.msi
+```
+
+Run it from source on any desktop OS: `./gradlew :desktop:run`.
