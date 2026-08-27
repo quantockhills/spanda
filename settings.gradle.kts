@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Spanda"
 include(":app")
+include(":desktop")
