@@ -1,4 +1,4 @@
-name: Desktop MSI (Windows)
+name: Windows MSI (Spanda desktop)
 
 on:
   push:
