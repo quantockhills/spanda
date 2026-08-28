@@ -2,7 +2,12 @@ package com.madhav.bhairava.notify
 
 import android.content.Context
 import android.content.SharedPreferences
+import org.json.JSONArray
 import org.json.JSONObject
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object AppSettings {
     private const val PREFS = "app_settings"
@@ -159,5 +164,67 @@ object AppSettings {
 
     fun setNotes(context: Context, notes: Map<String, String>) {
         writeNotes(context, notes)
+    }
+
+    // ----- Local backups (safety net; works without sync) -----
+
+    private const val KEY_BACKUP_MAX = 20
+
+    /** Snapshot notes+favorites to app-local backups dir. Returns backup path or null. */
+    fun backupNow(context: Context): String? {
+        return try {
+            val dir = File(context.getFilesDir(), "backups").apply { mkdirs() }
+            val ts = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date())
+            val payload = JSONObject()
+            payload.put("favorites", JSONArray(getFavorites(context).toList()))
+            val notesObj = JSONObject()
+            getNotes(context).forEach { (k, v) -> notesObj.put(k, v) }
+            payload.put("notes", notesObj)
+            payload.put("version", 1)
+            payload.put("backedUpAt", System.currentTimeMillis())
+            val file = File(dir, "spanda-backup-$ts.json")
+            file.writeText(payload.toString())
+            pruneBackups(dir)
+            file.absolutePath
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /** Restore notes+favorites from the most recent local backup. Returns status text. */
+    fun restoreLatestBackup(context: Context): String {
+        val dir = File(context.getFilesDir(), "backups")
+        val files = dir.listFiles { f -> f.name.startsWith("spanda-backup-") && f.name.endsWith(".json") }
+            ?.sortedByDescending { it.lastModified() }
+            ?: return "No backup found"
+        if (files.isEmpty()) return "No backup found"
+        return try {
+            val obj = JSONObject(files.first().readText())
+            val favs = obj.optJSONArray("favorites")?.let { arr ->
+                (0 until arr.length()).map { arr.getString(it) }.toSet()
+            } ?: emptySet()
+            val notes = mutableMapOf<String, String>()
+            obj.optJSONObject("notes")?.let { n ->
+                val keys = n.keys()
+                while (keys.hasNext()) {
+                    val k = keys.next()
+                    notes[k] = n.getString(k)
+                }
+            }
+            setFavorites(context, favs)
+            setNotes(context, notes)
+            "Restored ${favs.size} favorites + ${notes.size} notes from ${files.first().name}"
+        } catch (e: Exception) {
+            "Restore failed: ${e.message}"
+        }
+    }
+
+    private fun pruneBackups(dir: File) {
+        val files = dir.listFiles { f -> f.name.startsWith("spanda-backup-") && f.name.endsWith(".json") }
+            ?.sortedByDescending { it.lastModified() }
+            ?: return
+        if (files.size > KEY_BACKUP_MAX) {
+            files.drop(KEY_BACKUP_MAX).forEach { it.delete() }
+        }
     }
 }
