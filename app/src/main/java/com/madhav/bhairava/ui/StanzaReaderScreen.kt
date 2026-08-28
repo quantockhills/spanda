@@ -37,6 +37,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.automirrored.outlined.List
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import com.madhav.bhairava.data.Repository
 import com.madhav.bhairava.notify.AppSettings
 import com.madhav.bhairava.ui.theme.Crimson
@@ -45,6 +49,7 @@ import com.madhav.bhairava.ui.theme.Gold
 import com.madhav.bhairava.ui.theme.GoldLight
 import com.madhav.bhairava.ui.theme.Ink
 import com.madhav.bhairava.ui.theme.MutedInk
+import kotlinx.coroutines.launch
 
 @Composable
 fun StanzaReaderScreen(index: Int, onBack: () -> Unit) {
@@ -52,13 +57,24 @@ fun StanzaReaderScreen(index: Int, onBack: () -> Unit) {
     val lib = remember { Repository.library(context) }
     val stanzas = lib.stanzas
     val pager = rememberPagerState(initialPage = index.coerceIn(0, (stanzas.size - 1).coerceAtLeast(0))) { stanzas.size }
+    val scope = rememberCoroutineScope()
+    var showIndex by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             ReaderTopBar(
                 title = "Śivabodhaviṃśikā",
                 subtitle = "${pager.currentPage + 1} of ${stanzas.size}",
-                onBack = onBack
+                onBack = onBack,
+                actions = {
+                    IconButton(onClick = { showIndex = true }) {
+                        Icon(
+                            Icons.AutoMirrored.Outlined.List,
+                            contentDescription = "Jump to stanza",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
             )
         }
     ) { pad ->
@@ -190,5 +206,20 @@ fun StanzaReaderScreen(index: Int, onBack: () -> Unit) {
                 Spacer(Modifier.height(36.dp))
             }
         }
+    }
+
+    if (showIndex) {
+        VerseIndexSheet(
+            title = "Śivabodhaviṃśikā — ${stanzas.size} stanzas",
+            entries = stanzas.mapIndexed { i, s ->
+                devanagariNum(s.n) to s.translation.take(90)
+            },
+            currentIndex = pager.currentPage,
+            onSelect = { i ->
+                scope.launch { pager.scrollToPage(i) }
+                showIndex = false
+            },
+            onDismiss = { showIndex = false }
+        )
     }
 }

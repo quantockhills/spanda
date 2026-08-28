@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +39,7 @@ import com.madhav.bhairava.data.GitaChapter
 import com.madhav.bhairava.data.Repository
 import com.madhav.bhairava.notify.AppSettings
 import com.madhav.bhairava.ui.theme.DevanagariFont
+import kotlinx.coroutines.launch
 
 @Composable
 fun GitaVerseReaderScreen(chapterIndex: Int, initialVerse: Int = 0, onBack: () -> Unit) {
@@ -47,13 +50,24 @@ fun GitaVerseReaderScreen(chapterIndex: Int, initialVerse: Int = 0, onBack: () -
     val pager = rememberPagerState(
         initialPage = initialVerse.coerceIn(0, (verses.size - 1).coerceAtLeast(0))
     ) { verses.size }
+    val scope = rememberCoroutineScope()
+    var showVerseIndex by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             ReaderTopBar(
                 title = "Chapter ${chapter.n}",
                 subtitle = "${chapter.nameRoman.ifBlank { chapter.name }} · ${pager.currentPage + 1} of ${verses.size}",
-                onBack = onBack
+                onBack = onBack,
+                actions = {
+                    IconButton(onClick = { showVerseIndex = true }) {
+                        Icon(
+                            Icons.AutoMirrored.Outlined.List,
+                            contentDescription = "Jump to verse",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
             )
         }
     ) { pad ->
@@ -153,10 +167,20 @@ fun GitaVerseReaderScreen(chapterIndex: Int, initialVerse: Int = 0, onBack: () -
             }
         }
     }
-}
 
-private fun devanagariNum(n: Int): String {
-    val digits = mapOf('0' to "०", '1' to "१", '2' to "२", '3' to "३", '4' to "४",
-        '5' to "५", '6' to "६", '7' to "७", '8' to "८", '9' to "९")
-    return n.toString().map { digits[it] ?: it }.joinToString("")
+    if (showVerseIndex) {
+        VerseIndexSheet(
+            title = "Chapter ${chapter.n} — ${verses.size} verses",
+            entries = verses.mapIndexed { i, v ->
+                val preview = v.translation.ifBlank { v.transliteration }
+                devanagariNum(i + 1) to preview.take(90)
+            },
+            currentIndex = pager.currentPage,
+            onSelect = { i ->
+                scope.launch { pager.scrollToPage(i) }
+                showVerseIndex = false
+            },
+            onDismiss = { showVerseIndex = false }
+        )
+    }
 }

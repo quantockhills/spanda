@@ -21,6 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
@@ -32,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +50,7 @@ import com.madhav.bhairava.notify.AppSettings
 import com.madhav.bhairava.ui.theme.Crimson
 import com.madhav.bhairava.ui.theme.DevanagariFont
 import com.madhav.bhairava.ui.theme.Gold
+import kotlinx.coroutines.launch
 import com.madhav.bhairava.ui.theme.GoldLight
 import com.madhav.bhairava.ui.theme.Ink
 import com.madhav.bhairava.ui.theme.MutedInk
@@ -58,13 +61,24 @@ fun BhairavaReaderScreen(index: Int, onBack: () -> Unit) {
     val lib = remember { Repository.library(context) }
     val entries = lib.bhairavas
     val pager = rememberPagerState(initialPage = index.coerceIn(0, (entries.size - 1).coerceAtLeast(0))) { entries.size }
+    val scope = rememberCoroutineScope()
+    var showIndex by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             ReaderTopBar(
                 title = "Amṛtādistavaḥ",
                 subtitle = "${pager.currentPage + 1} of ${entries.size}",
-                onBack = onBack
+                onBack = onBack,
+                actions = {
+                    IconButton(onClick = { showIndex = true }) {
+                        Icon(
+                            Icons.AutoMirrored.Outlined.List,
+                            contentDescription = "Jump to stanza",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
             )
         }
     ) { pad ->
@@ -170,6 +184,21 @@ fun BhairavaReaderScreen(index: Int, onBack: () -> Unit) {
                 Spacer(Modifier.height(36.dp))
             }
         }
+    }
+
+    if (showIndex) {
+        VerseIndexSheet(
+            title = "Amṛtādistavaḥ — ${entries.size} stanzas",
+            entries = entries.mapIndexed { i, b ->
+                devanagariNum(b.n) to b.translation.take(90)
+            },
+            currentIndex = pager.currentPage,
+            onSelect = { i ->
+                scope.launch { pager.scrollToPage(i) }
+                showIndex = false
+            },
+            onDismiss = { showIndex = false }
+        )
     }
 }
 
