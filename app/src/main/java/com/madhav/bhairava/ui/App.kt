@@ -2,15 +2,29 @@ package com.madhav.bhairava.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.madhav.bhairava.sync.OneDriveSync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> Unit) {
     val nav = rememberNavController()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        // silent auto-sync on launch when signed in
+        if (OneDriveSync.isSignedIn(context)) {
+            withContext(Dispatchers.IO) {
+                try { OneDriveSync.syncNow(context) } catch (e: Exception) { }
+            }
+        }
+    }
 
     LaunchedEffect(deepLink) {
         val route = deepLink ?: return@LaunchedEffect
