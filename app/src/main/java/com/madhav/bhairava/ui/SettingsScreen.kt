@@ -99,6 +99,25 @@ fun SettingsScreen(onBack: () -> Unit, onThemeChanged: () -> Unit) {
         syncStatus = "Signed out — local notes & favorites kept"
     }
 
+    fun runBackup() {
+        syncStatus = ""
+        scope.launch {
+            syncBusy = true
+            val path = withContext(Dispatchers.IO) { AppSettings.backupNow(context) }
+            syncStatus = if (path != null) "Backup saved ✓" else "Backup failed"
+            syncBusy = false
+        }
+    }
+
+    fun runRestore() {
+        syncStatus = ""
+        scope.launch {
+            syncBusy = true
+            syncStatus = withContext(Dispatchers.IO) { AppSettings.restoreLatestBackup(context) }
+            syncBusy = false
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -233,9 +252,53 @@ fun SettingsScreen(onBack: () -> Unit, onThemeChanged: () -> Unit) {
                 }
                 Spacer(Modifier.height(8.dp))
             }
+
+            item {
+                Text(
+                    "Local Backup",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(Modifier.height(8.dp))
+            }
+
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(0.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
+                ) {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            "Backup notes & favorites",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "Snapshot saved on this device (keeps the last 20). Sync also backs up automatically before every sync.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Button(onClick = ::runBackup, enabled = !syncBusy) {
+                                Text(if (syncBusy) "Working…" else "Backup now")
+                            }
+                            Spacer(Modifier.width(12.dp))
+                            TextButton(onClick = ::runRestore, enabled = !syncBusy) { Text("Restore latest") }
+                        }
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
+            }
         }
     }
-
     pendingCode?.let { info ->
         AlertDialog(
             onDismissRequest = {

@@ -98,6 +98,10 @@ object OneDriveSync {
     // ----- Sync -----
 
     fun syncNow(context: Context): String {
+        // Safety net: snapshot local notes+favorites BEFORE merging remote changes,
+        // so a botched sync can always be undone from ~/.spanda/backups/.
+        try { AppSettings.backupNow(context) } catch (e: Exception) { }
+
         val access = ensureAccessToken(context) ?: return "Not signed in."
         var remote: JSONObject? = null
         val (getCode, getResp) = graphGet("$GRAPH_APPROOT:/$SYNC_FILE:/content", access)

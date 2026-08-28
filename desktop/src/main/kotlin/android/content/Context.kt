@@ -18,6 +18,8 @@ open class Context {
 
     fun getFileDir(): File = File(System.getProperty("user.home"), ".spanda").apply { mkdirs() }
 
+    fun getFilesDir(): File = File(System.getProperty("user.home"), ".spanda").apply { mkdirs() }
+
     companion object {
         const val MODE_PRIVATE = 0
     }
