@@ -3,7 +3,7 @@
 A personal Android app for texts translated and commented by **Śaivācārya Sthaneshwar Timalsina**
 (Vimarsha Foundation, San Diego, 2021):
 
-> **Not affiliated with, endorsed by, or sponsored by Vimarsha Foundation or Boris Marjanović.**
+> **Not affiliated with, endorsed by, or sponsored by Vimarsha Foundation.**
 > This is an unofficial, personal project built for my own study of these texts.
 > The Śivabodhaviṃśikā/Amṛtādistavaḥ/Saṃvarta Stavaḥ translations and maṇḍala art are © Vimarsha Foundation (San Diego, 2021);
 > all included here for personal study only, not redistributed commercially.
