@@ -14,14 +14,13 @@ object Repository {
             lib?.let { return it }
             val sivabodha = context.assets.open("sivabodha.json").bufferedReader().use { it.readText() }
             val amrta = context.assets.open("amrta.json").bufferedReader().use { it.readText() }
-            val gita = context.assets.open("gita.json").bufferedReader().use { it.readText() }
             val samvarta = context.assets.open("samvarta.json").bufferedReader().use { it.readText() }
-            lib = parse(sivabodha, amrta, gita, samvarta)
+            lib = parse(sivabodha, amrta, samvarta)
             return lib!!
         }
     }
 
-    private fun parse(siv: String, amr: String, git: String, svt: String): Library {
+    private fun parse(siv: String, amr: String, svt: String): Library {
         val sj = JSONObject(siv)
         val aj = JSONObject(amr)
 
@@ -78,32 +77,6 @@ object Repository {
         }
         val mvu = aj.getJSONObject("mvu")
 
-        val gitaChapters = JSONObject(git).getJSONArray("chapters").let { arr ->
-            (0 until arr.length()).map { i ->
-                val o = arr.getJSONObject(i)
-                val verses = o.getJSONArray("verses").let { va ->
-                    (0 until va.length()).map { j ->
-                        val vo = va.getJSONObject(j)
-                        GitaVerse(
-                            label = vo.getString("label"),
-                            sanskrit = vo.optString("sanskrit", ""),
-                            transliteration = vo.optString("transliteration", ""),
-                            translation = vo.getString("translation"),
-                            commentary = vo.optString("commentary", "")
-                        )
-                    }
-                }
-                GitaChapter(
-                    n = o.getInt("n"),
-                    name = o.optString("name", ""),
-                    nameRoman = o.optString("nameRoman", ""),
-                    meaning = o.optString("meaning", ""),
-                    intro = o.optString("intro", ""),
-                    verses = verses
-                )
-            }
-        }
-
         // Saṃvarta Stavaḥ
         val sj2 = JSONObject(svt)
         fun parseVerse(o: JSONObject): SamvartaVerse = SamvartaVerse(
@@ -157,7 +130,6 @@ object Repository {
             prologue = prologue,
             stanzas = stanzas,
             bhairavas = bhairavas,
-            gita = gitaChapters,
             samvartaTitle = sj2.getString("title"),
             samvartaTitleRoman = sj2.getString("title_roman"),
             samvartaSubtitle = sj2.getString("subtitle"),

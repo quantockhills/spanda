@@ -33,23 +33,6 @@ data class OpeningVerse(
     val translation: String
 )
 
-data class GitaVerse(
-    val label: String,
-    val sanskrit: String,
-    val transliteration: String,
-    val translation: String,
-    val commentary: String
-)
-
-data class GitaChapter(
-    val n: Int,
-    val name: String,
-    val nameRoman: String,
-    val meaning: String,
-    val intro: String,
-    val verses: List<GitaVerse>
-)
-
 data class Library(
     val title: String,
     val subtitle: String,
@@ -60,7 +43,6 @@ data class Library(
     val prologue: List<OpeningVerse>,
     val stanzas: List<Stanza>,
     val bhairavas: List<Bhairava>,
-    val gita: List<GitaChapter>,
     val samvartaTitle: String = "",
     val samvartaTitleRoman: String = "",
     val samvartaSubtitle: String = "",

@@ -6,7 +6,6 @@ A personal Android app for texts translated and commented by **Śaivācārya Sth
 > **Not affiliated with, endorsed by, or sponsored by Vimarsha Foundation or Boris Marjanović.**
 > This is an unofficial, personal project built for my own study of these texts.
 > The Śivabodhaviṃśikā/Amṛtādistavaḥ/Saṃvarta Stavaḥ translations and maṇḍala art are © Vimarsha Foundation (San Diego, 2021);
-> the Gītārtha-saṅgraha translation is © Boris Marjanović / Indica Books (2004);
 > all included here for personal study only, not redistributed commercially.
 > Consider supporting Vimarsha Foundation: <https://www.vimarshafoundation.org/supportus>
 
@@ -23,9 +22,6 @@ A personal Android app for texts translated and commented by **Śaivācārya Sth
    each with Devanagari, transliteration, translation, and a companion
    photograph (temple sculpture); plus the opening verse, three transition
    verses, and the colophon.
-4. **Bhagavad Gītā** — the Gītārtha-saṅgraha, Abhinavagupta's commentary
-   on the Gita in the Kashmiri recension: 711 verses with Sanskrit,
-   transliteration, translation, and commentary.
 
 For personal study only. All text and art © Vimarsha Foundation, used here
 privately, not redistributed.
@@ -37,11 +33,10 @@ privately, not redistributed.
 - **Amṛtādi gallery** — all 50 Bhairavas with their maṇḍalas; swipe between them.
 - **Saṃvarta reader** — 46 verses across the four soma-pressings with their
   sculpture photographs; opening/closing verses and colophon included.
-- **Gītā reader** — 18 chapters, verse-by-verse, swipeable.
 - **Daily reminder** — a random meditation notification each day
   (configurable time, enable/disable). Tapping it opens the exact stanza/bhairava/verse.
 - **Today's meditation** — a random verse on the home screen, reshuffle anytime.
-- **Favorites & notes** — save verses across all four texts; inline notepad
+- **Favorites & notes** — save verses across all three texts; inline notepad
   per verse and a My Notes screen.
 - **Light & dark themes** — follows the system setting; neutral near-white background
   with medium-dark red accents and sharp square corners. Tiro Devanagari Sanskrit

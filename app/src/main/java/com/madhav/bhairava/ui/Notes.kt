@@ -148,7 +148,7 @@ fun VerseNotepad(route: String) {
     }
 }
 
-/** Resolve a route ("gita/0/12", "sivabodha/3", "amrta/5") to a display title. */
+/** Resolve a route ("sivabodha/3", "amrta/5") to a display title. */
 fun routeTitle(lib: Library, route: String): Pair<String, String> {
     return when {
         route.startsWith("sivabodha/") -> {
@@ -165,14 +165,6 @@ fun routeTitle(lib: Library, route: String): Pair<String, String> {
             val idx = route.removePrefix("samvarta/").toIntOrNull() ?: 0
             val entry = flattenSamvarta(lib).getOrNull(idx)
             if (entry != null) Pair(entry.label, "Saṃvarta Stavaḥ · ${entry.sublabel}") else Pair("Unknown", "")
-        }
-        route.startsWith("gita/") -> {
-            val parts = route.removePrefix("gita/").split("/")
-            val ch = parts.getOrNull(0)?.toIntOrNull() ?: 0
-            val v = parts.getOrNull(1)?.toIntOrNull() ?: 0
-            val gc = lib.gita.getOrNull(ch)
-            val gv = gc?.verses?.getOrNull(v)
-            if (gv != null) Pair("BG ${gc.n}.${gv.label}", gc.nameRoman.ifBlank { "Chapter ${gc.n}" }) else Pair("Unknown", "")
         }
         else -> Pair("Unknown", "")
     }

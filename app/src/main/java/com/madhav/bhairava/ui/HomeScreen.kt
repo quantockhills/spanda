@@ -80,7 +80,6 @@ import kotlin.random.Random
 fun HomeScreen(
     onOpenSivabodha: () -> Unit,
     onOpenAmrta: () -> Unit,
-    onOpenGita: () -> Unit,
     onOpenSamvarta: () -> Unit,
     onOpenRoute: (String) -> Unit,
     onOpenSettings: () -> Unit,
@@ -331,15 +330,6 @@ fun HomeScreen(
                 subtitle = "Timalsina's hymn to Saṃvarta Bhairava — the four soma-pressings of the day, with the Saṃvartamaṇḍala.",
                 thumb = rememberAssetImage("samvarta_p13_0.jpg"),
                 onClick = onOpenSamvarta
-            )
-        }
-        item {
-            BookCard(
-                devTitle = "भगवद्गीता",
-                title = "Bhagavad Gītā",
-                subtitle = "The Gītārtha-saṅgraha — Abhinavagupta's commentary on the Gita, verse by verse, in the Kashmiri recension.",
-                thumb = null,
-                onClick = onOpenGita
             )
         }
 
