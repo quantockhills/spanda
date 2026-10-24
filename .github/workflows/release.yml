@@ -1,0 +1,49 @@
+name: Release
+
+# Push a tag like v1.4.0 (or run manually with a tag name) to build the APK
+# and publish it as a GitHub release.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g. v1.4.0); created on the current commit if missing"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build debug APK
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          cp app/build/outputs/apk/debug/app-debug.apk app-debug.apk
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" app-debug.apk --clobber
+          else
+            gh release create "$TAG" app-debug.apk \
+              --target "${{ github.sha }}" \
+              --title "Spanda ${TAG#v}" \
+              --notes "Spanda ${TAG#v}. Adds Vows & Contemplations: the yamas and niyamas (Yoga-sūtra 2.30–2.45) and maitrī, karuṇā, muditā, upekṣā (1.33), each with Vyāsa's commentary, in J. H. Woods's 1914 translation. Attached: app-debug.apk (debug-signed)."
+          fi

@@ -58,6 +58,7 @@ fun HomeScreen(
     onOpenSivabodha: () -> Unit,
     onOpenAmrta: () -> Unit,
     onOpenSamvarta: () -> Unit,
+    onOpenVows: () -> Unit,
     onOpenRoute: (String) -> Unit,
     onOpenSettings: () -> Unit,
     onOpenFavorites: () -> Unit,
@@ -210,6 +211,15 @@ fun HomeScreen(
                 subtitle = "Timalsina's hymn to Saṃvarta Bhairava — the four soma-pressings of the day, with the Saṃvartamaṇḍala.",
                 thumb = rememberAssetImage("samvarta_p13_0.jpg"),
                 onClick = onOpenSamvarta
+            )
+        }
+        item {
+            BookCard(
+                devTitle = "व्रत · भावना",
+                title = "Vows & Contemplations",
+                subtitle = "The yamas and niyamas I have taken as vows, and maitrī, karuṇā, muditā, upekṣā as my own contemplations — Yoga-sūtra with Vyāsa's commentary.",
+                thumb = null,
+                onClick = onOpenVows
             )
         }
 

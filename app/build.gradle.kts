@@ -32,8 +32,8 @@ android {
         applicationId = "com.madhav.bhairava"
         minSdk = 26
         targetSdk = 34
-        versionCode = 14
-        versionName = "1.3.10"
+        versionCode = 15
+        versionName = "1.4.0"
     }
 
     buildTypes {
