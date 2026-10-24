@@ -87,6 +87,11 @@ private fun FavoriteItem(route: String, lib: com.madhav.bhairava.data.Library, o
             val s = lib.stanzas.getOrNull(idx)
             if (s != null) Pair(s.name, "Śivabodhaviṃśikā · ${s.ordinal}") else Pair("Unknown", "")
         }
+        route.startsWith("vows/") -> {
+            val idx = route.removePrefix("vows/").toIntOrNull() ?: 0
+            val v = com.madhav.bhairava.data.VowsRepository.entry(context, idx)
+            if (v != null) Pair(v.title, "Vows & Contemplations · ${v.ref}") else Pair("Unknown", "")
+        }
         route.startsWith("amrta/") -> {
             val idx = route.removePrefix("amrta/").toIntOrNull() ?: 0
             val b = lib.bhairavas.getOrNull(idx)

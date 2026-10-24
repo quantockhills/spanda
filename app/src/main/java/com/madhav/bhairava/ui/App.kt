@@ -91,7 +91,19 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
             )
         }
         composable("vows") {
-            VowsScreen(onBack = { nav.popBackStack() })
+            VowsScreen(
+                onBack = { nav.popBackStack() },
+                onOpen = { i -> nav.navigate("vows/$i") }
+            )
+        }
+        composable(
+            "vows/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.IntType })
+        ) { entry ->
+            VowsReaderScreen(
+                index = entry.arguments?.getInt("index") ?: 0,
+                onBack = { nav.popBackStack() }
+            )
         }
         composable("settings") {
             SettingsScreen(
