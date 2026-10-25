@@ -90,67 +90,10 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val lib = remember { Repository.library(context) }
-    val pool = remember(lib) { buildPool(lib) }
+    val pool = remember(lib) { buildPool(context, lib) }
     var todayIdx by remember { mutableIntStateOf(if (pool.isEmpty()) 0 else Random.nextInt(pool.size)) }
     val cover = rememberAssetImage("cover.jpg")
 
-    var reminderEnabled by remember { mutableStateOf(ReminderScheduler.isEnabled(context)) }
-    var reminderTime by remember { mutableStateOf(ReminderScheduler.currentTime(context)) }
-    var showTimeDialog by remember { mutableStateOf(false) }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        if (granted) {
-            ReminderScheduler.schedule(context, reminderTime.first, reminderTime.second)
-            reminderEnabled = true
-        }
-    }
-
-    fun toggleReminder(on: Boolean) {
-        if (on) {
-            val needPermission = Build.VERSION.SDK_INT >= 33 &&
-                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-            if (needPermission) {
-                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            } else {
-                ReminderScheduler.schedule(context, reminderTime.first, reminderTime.second)
-                reminderEnabled = true
-            }
-        } else {
-            ReminderScheduler.cancel(context)
-            reminderEnabled = false
-        }
-    }
-
-    if (showTimeDialog) {
-        val tp = rememberTimePickerState(
-            initialHour = reminderTime.first,
-            initialMinute = reminderTime.second,
-            is24Hour = true
-        )
-        AlertDialog(
-            onDismissRequest = { showTimeDialog = false },
-            title = { Text("Daily meditation", style = MaterialTheme.typography.titleMedium) },
-            text = {
-                Column {
-                    Text("A random meditation from both texts, every day.", style = MaterialTheme.typography.bodySmall)
-                    Spacer(Modifier.height(10.dp))
-                    TimePicker(state = tp)
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    reminderTime = tp.hour to tp.minute
-                    showTimeDialog = false
-                    if (reminderEnabled) ReminderScheduler.schedule(context, tp.hour, tp.minute)
-                }) { Text("Save", color = MaterialTheme.colorScheme.primary) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showTimeDialog = false }) { Text("Cancel", color = MaterialTheme.colorScheme.onSurfaceVariant) }
-            }
-        )
-    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
@@ -268,43 +211,7 @@ fun HomeScreen(
         }
 
         // ---- reminder ----
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(0.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-            ) {
-                Row(
-                    Modifier.padding(horizontal = 18.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Outlined.Notifications, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text("Daily reminder", style = MaterialTheme.typography.titleSmall)
-                        Text(
-                            "A random meditation notification",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Text(
-                            "${reminderTime.first.toString().padStart(2, '0')}:${reminderTime.second.toString().padStart(2, '0')}",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(0.dp))
-                                .clickableNoRipple { showTimeDialog = true }
-                                .padding(top = 2.dp, bottom = 2.dp, end = 4.dp)
-                        )
-                    }
-                    Switch(
-                        checked = reminderEnabled,
-                        onCheckedChange = ::toggleReminder,
-                        colors = SwitchDefaults.colors(checkedTrackColor = MaterialTheme.colorScheme.primary)
-                    )
-                }
-            }
-        }
+        item { ReminderCard(pool) }
 
         // ---- the two texts ----
         item {

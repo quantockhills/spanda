@@ -1,6 +1,8 @@
 package com.madhav.bhairava.notify
 
+import android.content.Context
 import com.madhav.bhairava.data.Library
+import com.madhav.bhairava.data.VowsRepository
 import com.madhav.bhairava.ui.flattenSamvarta
 
 data class Meditation(
@@ -10,7 +12,8 @@ data class Meditation(
     val route: String
 )
 
-fun buildPool(lib: Library): List<Meditation> {
+/** Every verse a reminder can show: Śivabodha, Amṛtādistava, Saṃvarta, and the Vows book. */
+fun buildPool(context: Context, lib: Library): List<Meditation> {
     val pool = mutableListOf<Meditation>()
     lib.stanzas.forEach { s ->
         pool += Meditation(
@@ -34,6 +37,15 @@ fun buildPool(lib: Library): List<Meditation> {
             sanskrit = entry.verse.devanagari,
             body = entry.verse.translation,
             route = "samvarta/$i"
+        )
+    }
+    VowsRepository.load(context).entries.forEachIndexed { i, e ->
+        if (e.translation.isBlank()) return@forEachIndexed
+        pool += Meditation(
+            title = if (e.title.isBlank()) "Vows — ${e.ref}" else "${e.ref} · ${e.title}",
+            sanskrit = e.devanagari.ifBlank { e.transliteration },
+            body = e.translation,
+            route = "vows/$i"
         )
     }
     return pool

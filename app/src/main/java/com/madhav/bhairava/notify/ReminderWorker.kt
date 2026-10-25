@@ -22,18 +22,25 @@ class ReminderWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
 
     override suspend fun doWork(): Result {
         val context = applicationContext
-        val lib = Repository.library(context)
-        val pool = buildPool(lib)
+        val pool = buildPool(context, Repository.library(context))
         if (pool.isEmpty()) return Result.success()
 
+        // A slot with a chosen verse always shows that verse; otherwise pick a random one,
+        // avoiding the verse shown last time.
+        val chosenRoute = inputData.getString(ReminderScheduler.KEY_ROUTE).orEmpty()
+        val chosen = pool.firstOrNull { it.route == chosenRoute } ?: randomPick(context, pool)
+
+        showNotification(context, chosen)
+        return Result.success()
+    }
+
+    private fun randomPick(context: Context, pool: List<Meditation>): Meditation {
         val prefs = context.getSharedPreferences(ReminderScheduler.PREFS, Context.MODE_PRIVATE)
         val last = prefs.getInt("last_index", -1)
         var idx = Random.nextInt(pool.size)
         if (pool.size > 1 && idx == last) idx = (idx + 1) % pool.size
         prefs.edit().putInt("last_index", idx).apply()
-
-        showNotification(context, pool[idx])
-        return Result.success()
+        return pool[idx]
     }
 
     private fun showNotification(context: Context, m: Meditation) {
