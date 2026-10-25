@@ -139,6 +139,34 @@ fun VowsScreen(onBack: () -> Unit, onOpen: (Int) -> Unit, onlyGroup: String? = n
                                 }
                             }
                         }
+                        group.viniyoga?.let { v ->
+                            Spacer(Modifier.height(16.dp))
+                            Text(
+                                v.title.uppercase(),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                v.iast,
+                                style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic),
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                            paragraphs(v.translationEn).forEach { p ->
+                                Text(
+                                    p,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.padding(bottom = 8.dp)
+                                )
+                            }
+                            Text(
+                                v.recitationEn,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                            Text(v.sourceEn, style = MaterialTheme.typography.bodySmall)
+                        }
                     }
                 }
                 itemsIndexed(group.entries) { i, entry ->

@@ -31,7 +31,17 @@ data class VowGroup(
     val imageAsset: String = "",
     /** Teacher's introduction, shown once above the group's first verse. */
     val teachingsEn: String = "",
+    /** Ritual application recited before the first verse; null when the group has none. */
+    val viniyoga: VowViniyoga? = null,
     val commentaryLabel: String = VOWS_COMMENTARY_LABEL
+)
+
+data class VowViniyoga(
+    val title: String,
+    val iast: String,
+    val translationEn: String,
+    val recitationEn: String,
+    val sourceEn: String
 )
 
 const val VOWS_COMMENTARY_LABEL = "VYĀSA'S COMMENTARY · WOODS, 1914"
@@ -65,6 +75,15 @@ object VowsRepository {
                     subtitleEn = g.strOr("subtitle_en", "subtitleEn"),
                     imageAsset = g.str("image"),
                     teachingsEn = g.str("teachings_en"),
+                    viniyoga = g.optJSONObject("viniyoga")?.let { v ->
+                        VowViniyoga(
+                            title = v.str("title"),
+                            iast = v.str("iast"),
+                            translationEn = v.str("translation_en"),
+                            recitationEn = v.str("recitation_en"),
+                            sourceEn = v.str("source_en")
+                        )
+                    },
                     commentaryLabel = label,
                     entries = (0 until ea.length()).map { ei ->
                         val e = ea.getJSONObject(ei)
