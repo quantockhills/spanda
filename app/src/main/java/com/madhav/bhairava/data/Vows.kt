@@ -17,7 +17,9 @@ data class VowEntry(
     val translation: String,
     val introEn: String,
     val commentaryEn: String,
-    val commentarySa: String
+    val commentarySa: String,
+    /** Heading over this verse's commentary; set from its group. */
+    val commentaryLabel: String = VOWS_COMMENTARY_LABEL
 )
 
 data class VowGroup(
@@ -26,8 +28,13 @@ data class VowGroup(
     val subtitleEn: String,
     val entries: List<VowEntry>,
     /** Optional artwork file in assets, shown above the group in the list. */
-    val imageAsset: String = ""
+    val imageAsset: String = "",
+    /** Teacher's introduction, shown once above the group's first verse. */
+    val teachingsEn: String = "",
+    val commentaryLabel: String = VOWS_COMMENTARY_LABEL
 )
+
+const val VOWS_COMMENTARY_LABEL = "VYĀSA'S COMMENTARY · WOODS, 1914"
 
 data class VowsBook(
     val title: String,
@@ -51,11 +58,14 @@ object VowsRepository {
             val groups = (0 until ga.length()).map { gi ->
                 val g = ga.getJSONObject(gi)
                 val ea = g.getJSONArray("entries")
+                val label = g.str("commentary_label").ifEmpty { VOWS_COMMENTARY_LABEL }
                 VowGroup(
                     name = g.str("name"),
-                    nameRoman = g.str("name_roman"),
-                    subtitleEn = g.str("subtitle_en"),
+                    nameRoman = g.strOr("name_roman", "nameRoman"),
+                    subtitleEn = g.strOr("subtitle_en", "subtitleEn"),
                     imageAsset = g.str("image"),
+                    teachingsEn = g.str("teachings_en"),
+                    commentaryLabel = label,
                     entries = (0 until ea.length()).map { ei ->
                         val e = ea.getJSONObject(ei)
                         VowEntry(
@@ -68,7 +78,8 @@ object VowsRepository {
                             translation = e.str("translation"),
                             introEn = e.str("intro_en"),
                             commentaryEn = e.str("commentary_en"),
-                            commentarySa = e.str("commentary_sa")
+                            commentarySa = e.str("commentary_sa"),
+                            commentaryLabel = label
                         )
                     }
                 )
@@ -89,3 +100,7 @@ object VowsRepository {
 
 private fun JSONObject.str(key: String): String =
     optString(key, "").takeUnless { it == "null" } ?: ""
+
+/** First non-empty value among the keys; the file uses both snake_case and camelCase. */
+private fun JSONObject.strOr(vararg keys: String): String =
+    keys.map { str(it) }.firstOrNull { it.isNotEmpty() } ?: ""

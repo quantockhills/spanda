@@ -104,6 +104,41 @@ fun VowsScreen(onBack: () -> Unit, onOpen: (Int) -> Unit, onlyGroup: String? = n
                         if (group.subtitleEn.isNotEmpty()) {
                             Text(group.subtitleEn, style = MaterialTheme.typography.bodySmall)
                         }
+                        if (group.teachingsEn.isNotEmpty()) {
+                            var showTeachings by remember(group.name) { mutableStateOf(false) }
+                            Spacer(Modifier.height(10.dp))
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .clickable { showTeachings = !showTeachings }
+                                    .padding(vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    if (showTeachings) "HIDE TEACHINGS" else "TEACHINGS · S. TIMALSINA",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(Modifier.weight(1f))
+                                Icon(
+                                    if (showTeachings) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                            AnimatedVisibility(visible = showTeachings) {
+                                Column {
+                                    paragraphs(group.teachingsEn).forEach { p ->
+                                        Text(
+                                            p,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            modifier = Modifier.padding(bottom = 10.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 itemsIndexed(group.entries) { i, entry ->
@@ -288,7 +323,7 @@ private fun VowPage(entry: VowEntry, route: String) {
         if (entry.commentaryEn.isNotEmpty()) {
             Spacer(Modifier.height(16.dp))
             Text(
-                "VYĀSA'S COMMENTARY · WOODS, 1914",
+                entry.commentaryLabel,
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary
             )
