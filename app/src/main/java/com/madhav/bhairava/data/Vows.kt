@@ -24,7 +24,9 @@ data class VowGroup(
     val name: String,
     val nameRoman: String,
     val subtitleEn: String,
-    val entries: List<VowEntry>
+    val entries: List<VowEntry>,
+    /** Optional artwork file in assets, shown above the group in the list. */
+    val imageAsset: String = ""
 )
 
 data class VowsBook(
@@ -53,6 +55,7 @@ object VowsRepository {
                     name = g.str("name"),
                     nameRoman = g.str("name_roman"),
                     subtitleEn = g.str("subtitle_en"),
+                    imageAsset = g.str("image"),
                     entries = (0 until ea.length()).map { ei ->
                         val e = ea.getJSONObject(ei)
                         VowEntry(

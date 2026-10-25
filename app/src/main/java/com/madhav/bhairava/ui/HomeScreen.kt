@@ -82,6 +82,7 @@ fun HomeScreen(
     onOpenAmrta: () -> Unit,
     onOpenSamvarta: () -> Unit,
     onOpenVows: () -> Unit,
+    onOpenDevi: () -> Unit,
     onOpenRoute: (String) -> Unit,
     onOpenSettings: () -> Unit,
     onOpenFavorites: () -> Unit,
@@ -340,6 +341,15 @@ fun HomeScreen(
                 subtitle = "The yamas and niyamas I have taken as vows, and maitrī, karuṇā, muditā, upekṣā as my own contemplations — Yoga-sūtra with Vyāsa's commentary.",
                 thumb = null,
                 onClick = onOpenVows
+            )
+        }
+        item {
+            BookCard(
+                devTitle = "देवी अथर्वशीर्षम्",
+                title = "Devī Atharvaśīrṣa",
+                subtitle = "Timalsina's teachings and verse-by-verse commentary on the Devī Atharvaśīrṣa (Vimarsha Publications).",
+                thumb = rememberAssetImage("devi_statue.jpg"),
+                onClick = onOpenDevi
             )
         }
 

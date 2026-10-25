@@ -39,6 +39,7 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
                 onOpenAmrta = { nav.navigate("amrta") },
                 onOpenSamvarta = { nav.navigate("samvarta") },
                 onOpenVows = { nav.navigate("vows") },
+                onOpenDevi = { nav.navigate("devi") },
                 onOpenRoute = { route -> nav.navigate(route) { launchSingleTop = true } },
                 onOpenSettings = { nav.navigate("settings") },
                 onOpenFavorites = { nav.navigate("favorites") },
@@ -94,6 +95,13 @@ fun App(deepLink: String?, onDeepLinkHandled: () -> Unit, onThemeChanged: () -> 
             VowsScreen(
                 onBack = { nav.popBackStack() },
                 onOpen = { i -> nav.navigate("vows/$i") }
+            )
+        }
+        composable("devi") {
+            VowsScreen(
+                onBack = { nav.popBackStack() },
+                onOpen = { i -> nav.navigate("vows/$i") },
+                onlyGroup = "Devī Atharvaśīrṣa"
             )
         }
         composable(

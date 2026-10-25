@@ -1,6 +1,7 @@
 package com.madhav.bhairava.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -52,21 +54,39 @@ const val VOWS_ROUTE_PREFIX = "vows/"
 
 /** Index list, grouped the same way as the other texts. Tapping a row opens the reader. */
 @Composable
-fun VowsScreen(onBack: () -> Unit, onOpen: (Int) -> Unit) {
+fun VowsScreen(onBack: () -> Unit, onOpen: (Int) -> Unit, onlyGroup: String? = null) {
     val context = LocalContext.current
     val book = remember { VowsRepository.load(context) }
+    val shown = onlyGroup?.let { name -> book.groups.firstOrNull { it.name == name }?.name }
 
     Column(Modifier.fillMaxSize()) {
-        ReaderTopBar(title = book.title, subtitle = book.subtitle, onBack = onBack, actions = {})
+        ReaderTopBar(
+            title = shown ?: book.title,
+            subtitle = if (shown != null) book.title else book.subtitle,
+            onBack = onBack,
+            actions = {}
+        )
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 24.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             book.groups.forEachIndexed { gi, group ->
+                if (shown != null && group.name != shown) return@forEachIndexed
                 val base = book.groups.take(gi).sumOf { it.entries.size }
                 item {
                     Column(Modifier.padding(top = 12.dp)) {
+                        if (group.imageAsset.isNotEmpty()) {
+                            val img = rememberAssetImage(group.imageAsset)
+                            if (img != null) {
+                                Image(
+                                    bitmap = img,
+                                    contentDescription = group.name,
+                                    contentScale = ContentScale.Fit,
+                                    modifier = Modifier.fillMaxWidth().height(320.dp).padding(bottom = 8.dp)
+                                )
+                            }
+                        }
                         Text(
                             group.name,
                             fontFamily = DevanagariFont,
